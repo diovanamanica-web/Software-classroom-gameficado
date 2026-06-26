@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    actor Aluno as Estudante
+    participant Sistema as Sistema
+    participant Storage as Cloud Storage (S3)
+    actor Prof as Professor
+
+    Aluno->>Sistema: Acessa a atividade
+    Sistema-->>Aluno: Exibe detalhes e prazo
+    
+    Aluno->>Sistema: Realiza upload do arquivo (Entrega)
+    Sistema->>Sistema: Verifica prazo (Data Atual <= Prazo?)
+    
+    alt Prazo Expirado
+        Sistema-->>Aluno: Erro: Prazo encerrado. Envio bloqueado.
+    else Prazo Válido
+        Sistema->>Storage: Salva arquivo
+        Storage-->>Sistema: Confirmação de salvamento
+        Sistema->>Sistema: Registra timestamp da entrega
+        Sistema->>Sistema: Calcula e atribui XP (Gamificação)
+        Sistema-->>Aluno: Sucesso: Atividade entregue!
+        Sistema-->>Prof: Notificação: Nova entrega recebida
+    end

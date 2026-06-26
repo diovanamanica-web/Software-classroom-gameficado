@@ -1,0 +1,24 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Nível 1: Diagrama de Contexto - Sistema de Gestão de Sala de Aula Online
+
+Person(estudante, "Estudante", "Usuário que acessa materiais e entrega atividades.")
+Person(professor, "Professor", "Usuário que cria turmas, atividades e corrige entregas.")
+Person(coordenador, "Coordenador", "Usuário que monitora o desempenho das turmas.")
+
+System(classroom, "Sistema de Gestão de Sala de Aula", "Plataforma central para gestão de turmas, atividades, avaliações e comunicação.")
+
+System_Ext(email_sys, "Sistema de E-mail", "Envia notificações aos usuários.")
+System_Ext(storage_sys, "Cloud Storage (AWS S3)", "Armazena arquivos e materiais didáticos.")
+
+Rel(estudante, classroom, "Acessa turmas, entrega atividades, visualiza notas")
+Rel(professor, classroom, "Cria turmas, publica materiais, corrige atividades")
+Rel(coordenador, classroom, "Acessa relatórios de desempenho")
+
+Rel(classroom, email_sys, "Envia e-mails de notificação usando")
+Rel(email_sys, estudante, "Envia notificações para")
+Rel(email_sys, professor, "Envia notificações para")
+
+Rel(classroom, storage_sys, "Armazena e recupera arquivos usando")
+@enduml

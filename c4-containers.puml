@@ -1,0 +1,43 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Nível 2: Diagrama de Containers - Sistema de Gestão de Sala de Aula Online
+
+Person(usuario, "Usuário", "Estudante, Professor ou Coordenador")
+
+System_Boundary(classroom, "Sistema de Gestão de Sala de Aula") {
+    Container(web_app, "Aplicaçao Web (SPA)", "React, TypeScript", "Interface de usuário principal da plataforma.")
+    Container(api_gateway, "API Gateway", "Node.js, Express", "Ponto de entrada único, roteamento e autenticação.")
+    
+    Container(auth_service, "Serviço de Autenticação", "Go", "Gerencia identidades, login e tokens JWT.")
+    Container(class_service, "Serviço de Turmas", "Node.js", "Gerencia turmas, matrículas e murais.")
+    Container(activity_service, "Serviço de Atividades", "Python", "Gerencia criação, entrega e notas de atividades.")
+    Container(gamification_service, "Serviço de Gamificação", "Node.js", "Gerencia XP e níveis dos estudantes.")
+    
+    ContainerDb(db_relacional, "Banco de Dados Principal", "PostgreSQL", "Armazena dados de usuários, turmas e notas.")
+    ContainerDb(db_nosql, "Banco de Dados de Documentos", "MongoDB", "Armazena logs de atividades e mensagens do mural.")
+}
+
+System_Ext(email_sys, "Sistema de E-mail", "AWS SES")
+System_Ext(storage_sys, "Cloud Storage", "AWS S3")
+
+Rel(usuario, web_app, "Usa", "HTTPS")
+Rel(web_app, api_gateway, "Faz chamadas API", "JSON/HTTPS")
+
+Rel(api_gateway, auth_service, "Roteia requisições")
+Rel(api_gateway, class_service, "Roteia requisições")
+Rel(api_gateway, activity_service, "Roteia requisições")
+Rel(api_gateway, gamification_service, "Roteia requisições")
+
+Rel(auth_service, db_relacional, "Lê/Escreve")
+Rel(class_service, db_relacional, "Lê/Escreve")
+Rel(activity_service, db_relacional, "Lê/Escreve")
+Rel(gamification_service, db_relacional, "Lê/Escreve")
+
+Rel(class_service, db_nosql, "Lê/Escreve")
+
+Rel(activity_service, storage_sys, "Faz upload/download de arquivos")
+Rel(class_service, email_sys, "Solicita envio de notificações")
+Rel(activity_service, gamification_service, "Notifica sobre entrega no prazo (Mensageria assíncrona)")
+
+@enduml
