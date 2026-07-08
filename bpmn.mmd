@@ -1,39 +1,32 @@
+graph LR
+    %% Definição do Pool / Raias utilizando Subgraphs
+    subgraph Pool
+        
+        subgraph Estudante [Estudante]
+            Start((Start)) --> A[1. Acessar Sistema]
+            A --> B[2. Selecionar Atividade]
+            B --> C{3. Prazo de<br>Entrega<br>Válido?}
+            
+            C -- Sim --> D[4. Anexar Arquivo]
+            D --> E[5. Confirmar Envio]
+            E --> End1(((End)))
+            
+            C -- Não --> F[2.1 Exibir mensagem<br>Prazo encerrado]
+            F --> End2((End))
+        end
 
+        subgraph Sistema [Sistema]
+            G[6. Validar anexo<br>e registrar<br>informações] --> H[7. Salvar dados no<br>banco de dados<br>Data e Hora]
+            H --> I[8. Enviar notificação<br>ao professor]
+            I --> End3(((End)))
+        end
+        
+    end
 
-subgraph Estudante
-    A((Início))
-    B["1. Acessar Sistema"]
-    C["2. Selecionar Atividade"]
-    D{"3. Prazo de entrega válido?"}
-    E["4. Anexar Arquivo"]
-    F["5. Confirmar Envio"]
-    G["Exibir mensagem: Prazo encerrado"]
-    H((Fim))
-end
+    %% Conectores entre as raias (Estudante para Sistema)
+    End1 -. Transmite<br>dados/arquivo .-> G
 
-subgraph Sistema
-    I["Receber dados do envio"]
-    J["Validar anexo e registrar informações"]
-    K["Salvar dados no banco"]
-    L["Registrar data e hora"]
-    M["Enviar notificação ao professor"]
-    N((Fim))
-end
-
-A --> B
-B --> C
-C --> D
-
-D -->|Sim| E
-E --> F
-F -.->|Mensagem| I
-
-D -->|Não| G
-G --> H
-
-I --> J
-J --> K
-K --> L
-L --> M
-M --> N
-```
+    %% Estilização para melhorar o visual no GitHub
+    style Estudante fill:none,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    style Sistema fill:none,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    style Pool fill:none,stroke:#333,stroke-width:2px
