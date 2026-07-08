@@ -1,42 +1,36 @@
 ```mermaid
 flowchart LR
 
-subgraph Pool["Pool: Entrega de Atividade"]
+classDef evento fill:#fff,stroke:#000,stroke-width:2px;
+classDef tarefa fill:#F5F5F5,stroke:#333;
+classDef gateway fill:#FFF3B0,stroke:#333;
+
+subgraph Pool["Entrega de Atividade"]
 
 subgraph Estudante
-A((Início))
-B[Acessar Sistema]
-C[Selecionar Atividade]
-D{Prazo de entrega<br/>válido?}
-E[Anexar Arquivo]
-F[Confirmar Envio]
-G[Exibir mensagem:<br/>Prazo encerrado]
-H((Fim))
+A(( )):::evento
+B["1. Acessar Sistema"]:::tarefa
+C["2. Selecionar Atividade"]:::tarefa
+D{"3. Prazo de entrega<br/>válido?"}:::gateway
+E["4. Anexar Arquivo"]:::tarefa
+F["5. Confirmar Envio"]:::tarefa
+G["4. Exibir mensagem<br/>Prazo encerrado"]:::tarefa
+H(( )):::evento
 end
 
 subgraph Sistema
-I[Receber dados do envio]
-J[Validar anexo e registrar informações]
-K[Salvar no banco de dados<br/>(Data e Hora)]
-L[Enviar notificação<br/>ao professor]
-M((Fim))
+I["6. Receber dados"]:::tarefa
+J["7. Validar anexo<br/>e registrar informações"]:::tarefa
+K["8. Salvar no banco<br/>(Data/Hora)"]:::tarefa
+L["9. Enviar notificação<br/>ao professor"]:::tarefa
+M(( )):::evento
 end
 
-A --> B
-B --> C
-C --> D
-
-D -- Sim --> E
-E --> F
-F -. Mensagem .-> I
-
-D -- Não --> G
-G --> H
-
-I --> J
-J --> K
-K --> L
-L --> M
+A --> B --> C --> D
+D -- Sim --> E --> F
+F -.->|Mensagem| I
+D -- Não --> G --> H
+I --> J --> K --> L --> M
 
 end
 ```
