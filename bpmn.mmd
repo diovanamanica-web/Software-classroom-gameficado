@@ -1,23 +1,21 @@
-flowchart LR
-
 subgraph Pool["Entrega de Atividade"]
 
 subgraph Estudante
 A((Início))
-B[Acessar Sistema]
-C[Selecionar Atividade]
-D{Prazo de entrega válido?}
-E[Anexar Arquivo]
-F[Confirmar Envio]
-G[Exibir mensagem: Prazo encerrado]
+B["1. Acessar Sistema"]
+C["2. Selecionar Atividade"]
+D{"3. Prazo de entrega válido?"}
+E["4. Anexar Arquivo"]
+F["5. Confirmar Envio"]
+G["Exibir mensagem<br/>Prazo encerrado"]
 H((Fim))
 end
 
 subgraph Sistema
-I[Receber dados do envio]
-J[Validar anexo e registrar informações]
-K[Salvar no banco de dados (Data e Hora)]
-L[Enviar notificação ao professor]
+I["Receber dados do envio"]
+J["Validar anexo e registrar informações"]
+K["Salvar no banco de dados<br/>Data e Hora"]
+L["Enviar notificação ao professor"]
 M((Fim))
 end
 
@@ -27,7 +25,7 @@ C --> D
 
 D -- Sim --> E
 E --> F
-F -.-> I
+F -. Mensagem .-> I
 
 D -- Não --> G
 G --> H
@@ -38,3 +36,4 @@ K --> L
 L --> M
 
 end
+```
