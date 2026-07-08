@@ -1,39 +1,40 @@
-
-subgraph Pool["Entrega de Atividade"]
+```mermaid
+flowchart LR
 
 subgraph Estudante
-A((Início))
-B["1. Acessar Sistema"]
-C["2. Selecionar Atividade"]
-D{"3. Prazo de entrega válido?"}
-E["4. Anexar Arquivo"]
-F["5. Confirmar Envio"]
-G["Exibir mensagem<br/>Prazo encerrado"]
-H((Fim))
+    A((Início))
+    B["1. Acessar Sistema"]
+    C["2. Selecionar Atividade"]
+    D{"3. Prazo de entrega válido?"}
+    E["4. Anexar Arquivo"]
+    F["5. Confirmar Envio"]
+    G["Exibir mensagem: Prazo encerrado"]
+    H((Fim))
 end
 
 subgraph Sistema
-I["Receber dados do envio"]
-J["Validar anexo e registrar informações"]
-K["Salvar no banco de dados<br/>Data e Hora"]
-L["Enviar notificação ao professor"]
-M((Fim))
+    I["Receber dados do envio"]
+    J["Validar anexo e registrar informações"]
+    K["Salvar dados no banco"]
+    L["Registrar data e hora"]
+    M["Enviar notificação ao professor"]
+    N((Fim))
 end
 
 A --> B
 B --> C
 C --> D
 
-D -- Sim --> E
+D -->|Sim| E
 E --> F
-F -. Mensagem .-> I
+F -.->|Mensagem| I
 
-D -- Não --> G
+D -->|Não| G
 G --> H
 
 I --> J
 J --> K
 K --> L
 L --> M
-
-end
+M --> N
+```
